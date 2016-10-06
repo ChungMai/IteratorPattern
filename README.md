@@ -15,4 +15,54 @@
   }
   ```
   
+  * We create an object or struct that we will let us iterate over any class type. Here we define a struct that we call 
+  *ObjectCollection*, where items are type *T*
+  ```swift
+  struct ObjectCollection<T>{
+    let items : [T]
+    var count: Int = 0
+    init(items : [T]){
+        self.items = items
+    }
+  }
+  ```
+  
+  * We create an *extension* of *ObjectCollection* struct by tell that we want to implement the *Sequence* and *IteratorProtocol*
+  
+  ```swift
+  extension ObjectCollection:Sequence, IteratorProtocol{
+    
+    mutating func next() -> T? {
+        
+        if count >= self.items.count {
+            return nil
+        } else {
+            defer { count = count + 1 }
+            return items[count]
+        }
+    }
+ }
+  ```
+  
+ * With Swift 3, if you want your type to act as its own iterator, you implement the requirement of *IteratorProtocol* protocol and declare conformance to both *Sequence* and *IteratorProtocol* protocol are suffient.
+ 
+ ## Usage
+ ```swift
+ let player1 = Player(name: "Helmi")
+ let player2 = Player(name: "Raphael")
+ let player3 = Player(name: "Adrien")
+ let player4 = Player(name: "Alain")
+
+ let players = ObjectCollection(items:[player1,player2, player3,player4])
+
+ for player in players{
+     print("Name: \(player.name)")
+ }
+ ```
+ 
+ 
+  
+  
+  
+  
   
